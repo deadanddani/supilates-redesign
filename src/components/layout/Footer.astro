@@ -138,8 +138,16 @@ const anyo = new Date().getFullYear();
     align-items: start;
   }
 
+  /* Su telefono y su email: en movil tienen que ser comodos de pulsar. */
+  .contacto a,
+  .barra a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+  }
+
   .contacto :global(svg) {
-    margin-top: 0.3rem;
+    margin-top: 0.85rem;
     color: rgb(255 255 255 / 0.55);
   }
 

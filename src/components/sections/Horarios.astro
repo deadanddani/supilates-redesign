@@ -1,0 +1,45 @@
+---
+import { site } from '../../data/site';
+import Button from '../ui/Button.astro';
+---
+<section class="horarios seccion" id="horarios">
+  <div class="wrap">
+    <p class="kick rv">Horarios</p>
+    <h2 class="rv rv-d1">Flexibles, de lunes a sábado</h2>
+
+    <div class="rejilla">
+      <article class="tarjeta rv rv-d2">
+        <h3>Horarios flexibles</h3>
+        <p>Rutinas personalizadas en función de tus necesidades y posibilidades.</p>
+        <p class="detalle">
+          {site.hours.map((h, i) => (
+            <>{i > 0 && ' · '}{h.days}: {h.time}</>
+          ))}
+        </p>
+        <Button href={site.whatsapp} external>Únete al grupo</Button>
+      </article>
+
+      <article class="tarjeta rv rv-d3">
+        <h3>Abiertos en verano</h3>
+        <p>Y no cerramos en verano, no hay excusas para seguir cuidando tu salud.</p>
+        <p class="detalle">Julio y agosto con horario completo</p>
+        <Button href={site.whatsapp} variant="outline" external>Únete al grupo</Button>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  h2 { margin-block: 0.875rem var(--space-l); }
+  .rejilla { display: grid; grid-template-columns: 1fr 1fr; gap: 1.125rem; }
+  .tarjeta {
+    border: 1px solid var(--line); border-radius: var(--radius-l);
+    padding: clamp(1.5rem, 3.4vw, 2.375rem); background: var(--surf);
+  }
+  h3 { margin-bottom: 0.7rem; }
+  .detalle {
+    font-weight: 700; color: var(--mor-d);
+    margin-block: 1.125rem 1.375rem; padding-top: 1.125rem; border-top: 1px solid var(--line);
+  }
+  @media (max-width: 47.5rem) { .rejilla { grid-template-columns: 1fr; } }
+</style>

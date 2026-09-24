@@ -1,0 +1,24 @@
+---
+import { site } from '../../data/site';
+import Button from '../ui/Button.astro';
+---
+<section class="cta seccion" id="cta">
+  <div class="wrap">
+    <p class="kick rv">Toma tu primera clase</p>
+    <h2 class="rv rv-d1">Bien, ¡llegó el momento!</h2>
+    <p class="entrada rv rv-d2">
+      Contáctame y comienza en el horario que puedas. Me dices si prefieres por la mañana
+      o por la tarde y lo arreglamos. Cualquier duda me escribes y te llamo.
+    </p>
+    <Button href={site.whatsapp} variant="green" external class="rv rv-d3">Escríbeme por WhatsApp</Button>
+  </div>
+</section>
+
+<style>
+  .cta { text-align: center; position: relative; }
+  h2 { margin-block: 1rem 1.125rem; transition: color 0.5s; }
+  .entrada { max-width: 56ch; margin-inline: auto; margin-bottom: 2rem; font-size: var(--step-1); transition: color 0.5s; }
+  .cta:global(.lit) h2 { color: #fff; }
+  .cta:global(.lit) .entrada { color: rgb(255 255 255 / 0.84); }
+  .cta:global(.lit) .kick { color: #c9a6d0; }
+</style>

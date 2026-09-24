@@ -1,0 +1,25 @@
+---
+import { Image } from 'astro:assets';
+import banda from '../../assets/images/banda-estudio.jpg';
+---
+{/* Solo fotografia: sin texto superpuesto ni velo oscuro encima. */}
+<div class="banda">
+  <div class="interior" id="banda">
+    <Image src={banda} alt="Sala del estudio con varias máquinas de pilates" widths={[700, 1200, 1800, 2400]} sizes="100vw" loading="lazy" />
+  </div>
+</div>
+
+<style>
+  .banda { padding: 0; }
+  .interior {
+    position: relative; overflow: hidden; margin-inline: auto;
+    height: clamp(15.5rem, 46vw, 33.75rem);
+    width: 62%; border-radius: var(--radius-l);
+    will-change: width, border-radius;
+  }
+  .interior :global(img) { width: 100%; height: 100%; object-fit: cover; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .interior { width: 100% !important; border-radius: 0 !important; }
+  }
+</style>

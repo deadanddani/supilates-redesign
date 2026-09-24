@@ -78,6 +78,7 @@ const jsonLd = {
   </head>
 
   <body>
+    <div class="tinte" id="tinte" aria-hidden="true"></div>
     <a class="skip" href="#contenido">Saltar al contenido</a>
     <Header />
     <main id="contenido">
@@ -87,6 +88,16 @@ const jsonLd = {
     <WhatsAppFab />
 
     <style>
+      /* Velo para el viraje de fondo al llegar al CTA final. */
+      .tinte {
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        background: var(--mor-d);
+        opacity: 0;
+        pointer-events: none;
+      }
+
       .skip {
         position: absolute;
         left: 0.5rem;

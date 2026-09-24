@@ -1,8 +1,28 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/site';
+import Hero from '../components/sections/Hero.astro';
+import TrustBar from '../components/sections/TrustBar.astro';
+import Metodo from '../components/sections/Metodo.astro';
+import Banda from '../components/sections/Banda.astro';
+import Servicios from '../components/sections/Servicios.astro';
+import Horarios from '../components/sections/Horarios.astro';
+import Testimonios from '../components/sections/Testimonios.astro';
+import CtaFinal from '../components/sections/CtaFinal.astro';
+
+/* La pagina consulta las colecciones; las secciones las reciben por props. */
+const servicios = (await getCollection('servicios')).sort((a, b) => a.data.orden - b.data.orden);
+const testimonios = (await getCollection('testimonios')).sort((a, b) => a.data.orden - b.data.orden);
 ---
 
 <BaseLayout title={`${site.name} | Pilates con máquina en Alcalá de Henares`}>
-  <h1>{site.tagline}</h1>
+  <Hero />
+  <TrustBar />
+  <Metodo />
+  <Banda />
+  <Servicios items={servicios} />
+  <Horarios />
+  <Testimonios items={testimonios} />
+  <CtaFinal />
 </BaseLayout>

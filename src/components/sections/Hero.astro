@@ -1,0 +1,127 @@
+---
+import { Image } from 'astro:assets';
+import { site } from '../../data/site';
+import Button from '../ui/Button.astro';
+import RatingBadge from '../ui/RatingBadge.astro';
+import heroImg from '../../assets/images/hero-reformer.jpg';
+---
+
+<section class="hero">
+  <div class="mancha" id="mancha" aria-hidden="true"></div>
+
+  <div class="texto">
+    <p class="kick">Pilates máquina · {site.city}</p>
+    <h1>Fortalece tu cuerpo,<br /><em>mente y espíritu</em></h1>
+    <p class="entrada">
+      Clases de 55 minutos en grupos de 4 o 5 personas, con una rutina adaptada a tus
+      necesidades y capacidades.
+    </p>
+    <div class="botones">
+      <Button href={site.whatsapp} external>Agenda tu primera clase</Button>
+      <Button href="#horarios" variant="outline">Ver horarios</Button>
+    </div>
+  </div>
+
+  {/*
+    El badge va FUERA de .media, que es quien lleva overflow:hidden y el
+    border-radius eliptico. Dentro, la mascara curva se lo come.
+  */}
+  <div class="figura">
+    <div class="media">
+      <Image
+        src={heroImg}
+        alt="Alumna trabajando sobre el reformer en el estudio"
+        widths={[420, 640, 900, 1200]}
+        sizes="(max-width: 53.75rem) 92vw, 44vw"
+        loading="eager"
+        fetchpriority="high"
+        id="hero-img"
+      />
+    </div>
+    <RatingBadge
+      label={site.reviews.label}
+      count={site.reviews.count}
+      source={site.reviews.source}
+      href="#testimonios"
+    />
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow-x: clip; /* la mancha sangra a proposito; que no genere scroll */
+    max-width: var(--wrap);
+    margin-inline: auto;
+    padding: clamp(1.5rem, 4vw, 3.5rem) var(--gutter) clamp(3.5rem, 8vw, 6.5rem);
+    display: grid;
+    grid-template-columns: 1.02fr 0.98fr;
+    gap: clamp(1.875rem, 5vw, 3.75rem);
+    align-items: center;
+  }
+
+  .mancha {
+    position: absolute;
+    inset-inline-end: -6%;
+    inset-block-start: -12%;
+    z-index: -1;
+    width: min(46vw, 34rem);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle at 34% 34%, rgb(125 31 143 / 0.13), transparent 66%);
+    will-change: transform;
+    pointer-events: none;
+  }
+
+  h1 {
+    margin-block: 1.25rem 1.375rem;
+  }
+
+  .entrada {
+    font-size: var(--step-1);
+    max-width: 36ch;
+    margin-bottom: 1.875rem;
+  }
+
+  .botones {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .figura {
+    position: relative; /* sin overflow: el badge sobresale a proposito */
+  }
+
+  .media {
+    overflow: hidden;
+    border-radius: 50% 50% var(--radius-m) var(--radius-m) / 34% 34% var(--radius-m) var(--radius-m);
+    aspect-ratio: 3 / 3.6;
+  }
+
+  .media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    will-change: transform;
+  }
+
+  @media (max-width: 53.75rem) {
+    .hero {
+      grid-template-columns: 1fr;
+    }
+
+    .media {
+      aspect-ratio: 4 / 3.4;
+      border-radius: var(--radius-l);
+    }
+
+    .figura {
+      margin-bottom: 1.5rem;
+    }
+
+    .botones :global(.btn) {
+      flex: 1 1 12rem;
+    }
+  }
+</style>
