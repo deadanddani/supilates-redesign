@@ -1,43 +1,76 @@
-# Astro Starter Kit: Minimal
+# Su Pilates by Flor — propuesta de rediseño
 
-```sh
-npm create astro@latest -- --template minimal
+Réplica estática y rediseñada de [supilatesbyflor.com](https://supilatesbyflor.com/),
+construida como propuesta comercial: paridad funcional completa con la web actual, con sus
+textos y su logotipo, y los doce defectos detectados corregidos.
+
+> **Esta demostración no se indexa.** Todas las páginas sirven `noindex, nofollow`.
+> Replica los textos de un negocio real en activo; indexarla crearía contenido duplicado que
+> competiría con su propia web. Ver `docs/adr/0003-noindex-en-la-demo.md`.
+
+## Arrancar
+
+```bash
+npm install
+npm run dev        # http://localhost:4321/supilates-redesign
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Comprobar
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+npm run check      # tipos
+npm run build      # compila a dist/
+npm test           # Playwright: rutas, accesibilidad, color, responsive, movimiento
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+La suite cubre las 8 rutas, cero incidencias graves de accesibilidad, las 7 parejas de color
+a WCAG AA, ausencia de scroll horizontal de 320 a 1920 px, y que con `prefers-reduced-motion`
+no quede ningún elemento invisible.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Estructura
 
-Any static assets, like images, can be placed in the `public/` directory.
+| Ruta | Contenido |
+| --- | --- |
+| `/` | Hero, barra de confianza, el método, servicios, horarios, testimonios, CTA |
+| `/nosotros` | Testimonios, beneficios del pilates con máquina, preguntas frecuentes |
+| `/blog` | Listado de artículos |
+| `/blog/[slug]` | Artículo |
+| `/aviso-legal`, `/privacidad`, `/cookies` | Páginas legales (plantilla) |
+| `/404` | No encontrada |
 
-## 🧞 Commands
+## Editar contenido
 
-All commands are run from the root of the project, from a terminal:
+Sin tocar componentes:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+- **Datos de contacto:** `src/data/site.ts`
+- **Servicios, testimonios, preguntas, artículos:** `src/content/*/`
+- **Color y tipografía:** `src/styles/tokens.css`
 
-## 👀 Want to learn more?
+El frontmatter está validado con Zod. Un campo ausente o mal tipado **rompe la compilación**
+en vez de publicar una página incompleta.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## Documentación
+
+| Documento | Contenido |
+| --- | --- |
+| `docs/AUDIT.md` | Los doce defectos de la web actual, con su dato y su corrección |
+| `docs/ARCHITECTURE.md` | Estructura, límites entre unidades, verificación |
+| `docs/CONTENT.md` | Origen y licencia de cada texto e imagen |
+| `docs/DESIGN-SYSTEM.md` | Tokens, tipografía, movimiento, accesibilidad |
+| `docs/adr/` | Decisiones estructurales |
+
+## Antes de enseñárselo
+
+Seis datos salen de su web sin confirmar. Ver `docs/CONTENT.md`:
+
+- [ ] `wa.link/4oru75` sigue vivo
+- [ ] Teléfono, email y dirección
+- [ ] Recuento de reseñas y la nota real de su ficha de Google
+- [ ] Medir ambas webs con Lighthouse en idénticas condiciones
+- [ ] Abrir la demo en un móvil real
+
+## Stack
+
+Astro 7 estático · TypeScript estricto · CSS propio con tokens · contenido en Markdown
+validado con Zod · fuentes autoalojadas · sin framework de interfaz · 1113 bytes de
+JavaScript comprimidos.
