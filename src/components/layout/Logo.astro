@@ -1,0 +1,13 @@
+---
+interface Props { class?: string; invertido?: boolean; }
+const { class: className, invertido = false } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<a class:list={['logo', className]} href={`${base}/`} aria-label="Su Pilates by Flor, ir al inicio">
+  <img src={`${base}/logo.svg`} alt="Su Pilates by Flor" width="160" height="160" class:list={[invertido && 'inv']} />
+</a>
+<style>
+  .logo { display: block; flex: none; }
+  img { height: var(--logo-h, 2.75rem); width: auto; transition: height 0.35s; }
+  .inv { filter: brightness(0) invert(1); }
+</style>

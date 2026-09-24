@@ -1,6 +1,9 @@
 ---
 import '../styles/global.css';
 import { site } from '../data/site';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import WhatsAppFab from '../components/layout/WhatsAppFab.astro';
 
 interface Props {
   title: string;
@@ -76,12 +79,12 @@ const jsonLd = {
 
   <body>
     <a class="skip" href="#contenido">Saltar al contenido</a>
-    <slot name="header" />
+    <Header />
     <main id="contenido">
       <slot />
     </main>
-    <slot name="footer" />
-    <slot name="fab" />
+    <Footer />
+    <WhatsAppFab />
 
     <style>
       .skip {
