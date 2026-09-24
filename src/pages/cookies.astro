@@ -1,0 +1,31 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { site } from '../data/site';
+---
+<LegalLayout title="Política de cookies" description="Este sitio no instala cookies ni rastrea a sus visitantes.">
+  <h2>Este sitio no usa cookies</h2>
+  <p>
+    No instalamos cookies propias ni de terceros, no hay analítica, ni píxeles de
+    seguimiento, ni publicidad. Por eso no verás ningún aviso de cookies: no hay nada que
+    consentir.
+  </p>
+
+  <h2>Por qué</h2>
+  <ul>
+    <li>Las tipografías se sirven desde este mismo dominio, no desde Google Fonts.</li>
+    <li>No hay vídeos incrustados de plataformas externas.</li>
+    <li>No hay mapas incrustados ni widgets de terceros.</li>
+  </ul>
+
+  <h2>Enlaces salientes</h2>
+  <p>
+    Los enlaces a WhatsApp e Instagram te llevan fuera de este sitio. Una vez allí se
+    aplican las políticas de cada plataforma, sobre las que {site.name} no tiene control.
+  </p>
+
+  <h2>Si esto cambia</h2>
+  <p>
+    Si en el futuro se añade analítica o algún contenido incrustado, se publicará el aviso
+    de consentimiento correspondiente antes de instalar nada en tu navegador.
+  </p>
+</LegalLayout>

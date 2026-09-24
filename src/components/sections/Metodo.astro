@@ -1,0 +1,63 @@
+---
+import { Image } from 'astro:assets';
+import Button from '../ui/Button.astro';
+import img1 from '../../assets/images/metodo-plancha.jpg';
+import img2 from '../../assets/images/metodo-madera.jpg';
+import img3 from '../../assets/images/metodo-estiramiento.jpg';
+
+const fotos = [
+  { src: img1, alt: 'Trabajo de plancha sobre el reformer', pie: 'Reformer' },
+  { src: img2, alt: 'Alumna tumbada trabajando la postura', pie: 'Trabajo de postura' },
+  { src: img3, alt: 'Estiramiento lateral guiado en la máquina', pie: 'Grupos de 4 o 5' },
+];
+---
+<section class="metodo seccion" id="metodo">
+  <div class="wrap rejilla">
+    <div class="fija">
+      <p class="kick rv">El método</p>
+      <h2 class="rv rv-d1">Así se trabaja en el <em>pilates con máquina</em></h2>
+      <p class="rv rv-d2">
+        Las clases duran 55 min aprox y se trabaja todo el cuerpo, a nivel muscular tonificando,
+        la postura corporal y la elongación.
+      </p>
+      <p class="rv rv-d3">
+        Si bien la clase es grupal no habrá más de 4 o 5 personas, por eso se puede hacer una
+        rutina especial para cada alumno según las necesidades y capacidades individuales.
+      </p>
+      <Button href="#servicios" variant="outline" class="rv rv-d4">Conoce el método</Button>
+    </div>
+
+    <div class="rail">
+      {fotos.map((f) => (
+        <figure class="rv">
+          <Image src={f.src} alt={f.alt} widths={[400, 700, 1000]} sizes="(max-width: 53.75rem) 92vw, 52vw" loading="lazy" />
+          <figcaption>{f.pie}</figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .rejilla { display: grid; grid-template-columns: 0.86fr 1.14fr; gap: clamp(1.875rem, 6vw, 5rem); align-items: start; }
+  .fija { position: sticky; inset-block-start: 20vh; }
+  .fija h2 { margin-block: 1rem 1.25rem; }
+  .fija p + p { margin-top: 1rem; }
+  .fija :global(.btn) { margin-top: 1.5rem; }
+  .rail { display: grid; gap: clamp(1.25rem, 4vw, 2.75rem); }
+  figure { margin: 0; border-radius: var(--radius-l); overflow: hidden; position: relative; }
+  figure :global(img) { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+  figcaption {
+    position: absolute; inset-inline-start: 1.125rem; inset-block-end: 1.125rem;
+    background: rgb(255 255 255 / 0.93); border-radius: var(--radius-pill);
+    padding: 0.5rem 1.0625rem; font-size: var(--step--1); font-weight: 700; color: var(--ink);
+  }
+  .rail figure:nth-child(2) { margin-inline-start: clamp(0px, 7vw, 5rem); }
+  .rail figure:nth-child(3) { margin-inline-end: clamp(0px, 5vw, 3.375rem); }
+
+  @media (max-width: 53.75rem) {
+    .rejilla { grid-template-columns: 1fr; }
+    .fija { position: static; }
+    .rail figure:nth-child(n) { margin-inline: 0; }
+  }
+</style>

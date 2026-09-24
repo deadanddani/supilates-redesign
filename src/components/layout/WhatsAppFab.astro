@@ -1,0 +1,25 @@
+---
+import { site } from '../../data/site';
+import Icon from '../ui/Icon.astro';
+---
+<a class="fab" id="fab" href={site.whatsapp} target="_blank" rel="noopener noreferrer"
+   aria-label="Escríbenos por WhatsApp">
+  <Icon name="whatsapp" size={28} />
+</a>
+
+<style>
+  .fab {
+    position: fixed; inset-inline-end: 1.125rem; inset-block-end: 1.125rem; z-index: 60;
+    display: flex; align-items: center; justify-content: center;
+    width: 3.5rem; height: 3.5rem; border-radius: 50%;
+    background: #25d366; color: #0b3d1c;
+    box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 0.28);
+    transform: scale(0);
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .fab:global(.on) { transform: scale(1); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fab { transform: scale(1); }
+  }
+</style>

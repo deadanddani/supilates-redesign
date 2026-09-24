@@ -1,0 +1,258 @@
+---
+import { site } from '../../data/site';
+import Logo from './Logo.astro';
+import Icon from '../ui/Icon.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const anyo = new Date().getFullYear();
+---
+
+<footer class="pie">
+  <div class="wrap rejilla">
+    <div class="marca">
+      <Logo invertido />
+      <p>Sé parte de nuestra comunidad.</p>
+      <ul class="social">
+        <li>
+          <a href={site.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <Icon name="instagram" size={18} />
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h2>Horarios</h2>
+      <ul class="lista">
+        {site.hours.map((h) => <li>{h.days}: {h.time}</li>)}
+        <li>Abierto todo el verano</li>
+      </ul>
+    </div>
+
+    <div>
+      <h2>Contacto</h2>
+      <ul class="lista contacto">
+        <li>
+          <Icon name="telefono" size={16} />
+          <a href={site.phoneHref}>{site.phone}</a>
+        </li>
+        <li>
+          <Icon name="correo" size={16} />
+          <a href={site.emailHref}>{site.email}</a>
+        </li>
+        <li>
+          <Icon name="lugar" size={16} />
+          <span>{site.address.street}<br />{site.address.postalCode} {site.address.locality}</span>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h2>Newsletter</h2>
+      <p>Consejos y novedades del estudio.</p>
+      <form class="alta" id="alta-newsletter" novalidate>
+        <label class="visually-hidden" for="email-alta">Correo electrónico</label>
+        <input id="email-alta" name="email" type="email" required placeholder="Correo electrónico" autocomplete="email" />
+        <button type="submit">Suscribirse</button>
+      </form>
+      <p class="aviso" id="aviso-alta" role="status"></p>
+    </div>
+  </div>
+
+  <div class="wrap barra">
+    <span>© {anyo} {site.name}</span>
+    <a href={`${base}/aviso-legal`}>Aviso legal</a>
+    <a href={`${base}/privacidad`}>Privacidad</a>
+    <a href={`${base}/cookies`}>Cookies</a>
+  </div>
+</footer>
+
+<script>
+  /*
+   * Sin backend: el formulario valida en cliente y avisa de que el alta
+   * llegara cuando haya servicio de correo. Documentado como el unico
+   * punto que necesita un tercero si el proyecto sale adelante.
+   */
+  const form = document.getElementById('alta-newsletter') as HTMLFormElement | null;
+  const aviso = document.getElementById('aviso-alta');
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!aviso) return;
+    const campo = form.querySelector<HTMLInputElement>('#email-alta');
+    if (!campo?.value || !campo.checkValidity()) {
+      aviso.textContent = 'Revisa el correo, parece que falta algo.';
+      aviso.dataset.tono = 'error';
+      campo?.focus();
+      return;
+    }
+    aviso.textContent = 'Gracias. El alta estará disponible muy pronto.';
+    aviso.dataset.tono = 'ok';
+    form.reset();
+  });
+</script>
+
+<style>
+  .pie {
+    background: #2e1b33;
+    color: rgb(255 255 255 / 0.76);
+    font-size: var(--step--1);
+    position: relative;
+    z-index: 1;
+  }
+
+  .rejilla {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr 1.15fr 1.2fr;
+    gap: clamp(1.5rem, 4vw, 2.75rem);
+    padding-block: clamp(2.75rem, 6vw, 4.75rem) clamp(1.75rem, 4vw, 2.75rem);
+  }
+
+  h2 {
+    font-family: var(--font-body);
+    font-size: var(--step--1);
+    font-weight: 700;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+
+  .marca :global(.logo) {
+    --logo-h: 3.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .contacto li {
+    display: grid;
+    grid-template-columns: 1rem 1fr;
+    gap: 0.625rem;
+    align-items: start;
+  }
+
+  /* Su telefono y su email: en movil tienen que ser comodos de pulsar. */
+  .contacto a,
+  .barra a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+  }
+
+  .contacto :global(svg) {
+    margin-top: 0.85rem;
+    color: rgb(255 255 255 / 0.55);
+  }
+
+  a {
+    color: rgb(255 255 255 / 0.86);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  a:hover {
+    color: #fff;
+  }
+
+  .social {
+    list-style: none;
+    margin: 1.125rem 0 0;
+    padding: 0;
+    display: flex;
+    gap: 0.625rem;
+  }
+
+  .social a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--tap);
+    height: var(--tap);
+    border: 1px solid rgb(255 255 255 / 0.3);
+    border-radius: 50%;
+    text-decoration: none;
+    transition:
+      background 0.25s,
+      border-color 0.25s;
+  }
+
+  .social a:hover {
+    background: var(--mor);
+    border-color: var(--mor);
+  }
+
+  .alta {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.875rem;
+    flex-wrap: wrap;
+  }
+
+  input {
+    flex: 1 1 8rem;
+    min-height: var(--tap);
+    min-width: 0;
+    background: transparent;
+    border: 1px solid rgb(255 255 255 / 0.3);
+    border-radius: var(--radius-s);
+    padding-inline: 0.875rem;
+    color: #fff;
+    font: inherit;
+  }
+
+  input::placeholder {
+    color: rgb(255 255 255 / 0.5);
+  }
+
+  button {
+    min-height: var(--tap);
+    background: var(--verde);
+    color: #fff;
+    border: 0;
+    border-radius: var(--radius-s);
+    padding-inline: 1.125rem;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .aviso {
+    margin-top: 0.625rem;
+    min-height: 1.25rem;
+  }
+
+  .aviso[data-tono='ok'] {
+    color: #9de89d;
+  }
+
+  .aviso[data-tono='error'] {
+    color: #ffb4a8;
+  }
+
+  .barra {
+    border-top: 1px solid rgb(255 255 255 / 0.15);
+    padding-block: 1.125rem;
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 51.25rem) {
+    .rejilla {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 30rem) {
+    .rejilla {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

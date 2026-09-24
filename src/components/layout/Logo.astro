@@ -1,0 +1,24 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../../assets/logo.png';
+
+/*
+ * El logo es suyo y no se toca: es lo que hace que reconozca su web al
+ * abrirla. El PNG original es 512x512 y aqui se muestra a 44-52px, asi
+ * que sobra resolucion. Una version en SVG seria mejor para materiales
+ * impresos y tamanos grandes: es una partida que ofrecerle aparte.
+ */
+interface Props { class?: string; invertido?: boolean; }
+const { class: className, invertido = false } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<a class:list={['logo', className]} href={`${base}/`} aria-label="Su Pilates by Flor, ir al inicio">
+  <Image src={logo} alt="Su Pilates by Flor" widths={[64, 128, 192]} sizes="192px" loading="eager" class:list={[invertido && 'inv']} />
+</a>
+
+<style>
+  .logo { display: block; flex: none; }
+  .logo :global(img) { height: var(--logo-h, 2.75rem); width: auto; transition: height 0.35s; }
+  .logo :global(.inv) { filter: brightness(0) invert(1); }
+</style>

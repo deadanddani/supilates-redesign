@@ -1,0 +1,33 @@
+---
+interface Props {
+  kicker: string;
+  title: string;
+  align?: 'left' | 'center';
+  id?: string;
+  class?: string;
+}
+
+const { kicker, title, align = 'left', id, class: className } = Astro.props;
+---
+
+<header class:list={['sh', align === 'center' && 'centro', className]} id={id}>
+  <p class="kick rv">{kicker}</p>
+  <h2 class="rv rv-d1" set:html={title} />
+  <slot />
+</header>
+
+<style>
+  .sh {
+    max-width: 44ch;
+    margin-bottom: var(--space-l);
+  }
+
+  .centro {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  h2 {
+    margin-top: var(--space-xs);
+  }
+</style>

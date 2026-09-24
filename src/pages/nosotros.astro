@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+import Beneficios from '../components/sections/Beneficios.astro';
+import Testimonios from '../components/sections/Testimonios.astro';
+import Faq from '../components/sections/Faq.astro';
+import CtaFinal from '../components/sections/CtaFinal.astro';
+
+const faq = (await getCollection('faq')).sort((a, b) => a.data.orden - b.data.orden);
+const testimonios = (await getCollection('testimonios')).sort((a, b) => a.data.orden - b.data.orden);
+---
+
+<BaseLayout
+  title={`Nosotros | ${site.name}`}
+  description="Qué es el pilates con máquina, qué beneficios tiene y las preguntas que más nos hacéis antes de empezar."
+>
+  <header class="portada wrap">
+    <p class="kick">Nosotros</p>
+    <h1>Nuestros clientes hablan por nosotros</h1>
+    <p class="entrada">
+      {site.reviews.count} reseñas en {site.reviews.source} y una valoración {site.reviews.label.toLowerCase()}.
+    </p>
+  </header>
+
+  <Testimonios items={testimonios} />
+  <Beneficios />
+  <Faq items={faq} />
+  <CtaFinal />
+</BaseLayout>
+
+<style>
+  .portada { padding-block: clamp(2rem, 6vw, 4.5rem) clamp(2.5rem, 6vw, 4rem); max-width: var(--wrap); }
+  h1 { margin-block: 1rem; max-width: 18ch; }
+  .entrada { font-size: var(--step-1); max-width: 48ch; }
+</style>

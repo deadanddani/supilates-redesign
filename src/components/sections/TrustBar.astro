@@ -1,0 +1,37 @@
+---
+import { site } from '../../data/site';
+const { count } = site.reviews;
+const { classMinutes, groupSize, monthsOpen } = site.facts;
+---
+<section class="confianza" aria-label="Datos del estudio">
+  <div class="wrap fila">
+    <a class="dato" href="#testimonios">
+      <span class="valor"><span data-count={count}>{count}</span></span>
+      <span class="clave">Reseñas en {site.reviews.source}</span>
+    </a>
+    <div class="dato">
+      <span class="valor"><span data-count={classMinutes}>{classMinutes}</span> min</span>
+      <span class="clave">Duración de clase</span>
+    </div>
+    <div class="dato">
+      <span class="valor"><span data-count={groupSize}>{groupSize}</span></span>
+      <span class="clave">Alumnas por grupo</span>
+    </div>
+    <div class="dato">
+      <span class="valor">{monthsOpen}</span>
+      <span class="clave">Meses al año abierto</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .confianza { background: var(--surf); border-block: 1px solid var(--line); }
+  .fila {
+    display: flex; gap: clamp(1rem, 4vw, 3.25rem); justify-content: space-between;
+    padding-block: 1.875rem; flex-wrap: wrap;
+  }
+  .dato { display: flex; flex-direction: column; gap: 0.2rem; min-width: 6.5rem; text-decoration: none; }
+  a.dato:hover .valor { color: var(--mor); }
+  .valor { font-family: var(--font-display); font-size: var(--step-3); color: var(--ink); line-height: 1; transition: color 0.2s; }
+  .clave { font-size: var(--step--1); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+</style>

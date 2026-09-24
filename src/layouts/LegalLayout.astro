@@ -1,0 +1,24 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import AvisoPlantilla from '../components/layout/AvisoPlantilla.astro';
+import { site } from '../data/site';
+
+interface Props { title: string; description: string; }
+const { title, description } = Astro.props;
+---
+<BaseLayout title={`${title} | ${site.name}`} description={description}>
+  <article class="legal wrap">
+    <p class="kick">Información legal</p>
+    <h1>{title}</h1>
+    <AvisoPlantilla />
+    <div class="cuerpo"><slot /></div>
+  </article>
+</BaseLayout>
+
+<style>
+  .legal { padding-block: clamp(2rem, 5vw, 3.5rem) var(--space-xl); max-width: 46rem; }
+  h1 { font-size: var(--step-4); margin-block: 0.75rem var(--space-m); }
+  .cuerpo :global(h2) { font-size: var(--step-2); margin-block: var(--space-m) 0.625rem; }
+  .cuerpo :global(p), .cuerpo :global(ul) { margin-bottom: 1rem; }
+  .cuerpo :global(ul) { padding-inline-start: 1.25rem; }
+</style>

@@ -1,0 +1,32 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import { site } from '../data/site';
+
+interface Props { entrada: CollectionEntry<'blog'>; }
+const { entrada } = Astro.props;
+const { titulo, descripcion, fecha } = entrada.data;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const formateada = fecha.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<BaseLayout title={`${titulo} | ${site.name}`} description={descripcion}>
+  <article class="entrada wrap">
+    <a class="volver" href={`${base}/blog`}>&larr; Todos los artículos</a>
+    <p class="kick">Blog</p>
+    <h1>{titulo}</h1>
+    <time datetime={fecha.toISOString().slice(0, 10)}>{formateada}</time>
+    <div class="cuerpo"><slot /></div>
+  </article>
+</BaseLayout>
+
+<style>
+  .entrada { padding-block: clamp(2rem, 5vw, 3.5rem) var(--space-xl); max-width: 46rem; }
+  .volver { display: inline-flex; align-items: center; min-height: var(--tap); text-decoration: none; color: var(--mor); font-weight: 600; }
+  .kick { margin-top: 1rem; }
+  h1 { font-size: var(--step-4); margin-block: 0.75rem; }
+  time { color: var(--muted); font-size: var(--step--1); }
+  .cuerpo { margin-top: var(--space-m); }
+  .cuerpo :global(h2) { font-size: var(--step-2); margin-block: var(--space-m) 0.625rem; }
+  .cuerpo :global(p) { margin-bottom: 1rem; }
+</style>

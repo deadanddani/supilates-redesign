@@ -1,0 +1,79 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { site } from '../../data/site';
+import Icon from '../ui/Icon.astro';
+import Button from '../ui/Button.astro';
+
+interface Props { items: CollectionEntry<'servicios'>[]; }
+const { items } = Astro.props;
+const destacado = items.find((s) => s.data.destacado);
+const resto = items.filter((s) => !s.data.destacado);
+---
+<section class="servicios seccion" id="servicios">
+  <div class="wrap">
+    <header class="cabecera">
+      <p class="kick rv">Nuestras clases</p>
+      <h2 class="rv rv-d1">A tu ritmo, sea cual sea tu punto de partida</h2>
+      <p class="rv rv-d2">
+        ¿Estás buscando una forma efectiva y segura de mejorar tu salud y flexibilidad?
+        Nuestra clase de Pilates en máquina es la respuesta.
+      </p>
+    </header>
+
+    <ul class="rejilla">
+      {destacado && (
+        <li class="tarjeta destacada rv">
+          <div>
+            <span class="ic"><Icon name={destacado.data.icono} size={22} /></span>
+            <h3>{destacado.data.titulo}</h3>
+            <p>{destacado.data.resumen}</p>
+          </div>
+          <Button href={site.whatsapp} external class="unirme">Quiero unirme</Button>
+        </li>
+      )}
+      {resto.map((s, i) => (
+        <li class:list={['tarjeta', 'rv', `rv-d${Math.min(i + 1, 6)}`]}>
+          <span class="ic"><Icon name={s.data.icono} size={22} /></span>
+          <h3>{s.data.titulo}</h3>
+          <p>{s.data.resumen}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .servicios { background: var(--surf); }
+  .cabecera { max-width: 39rem; margin-inline: auto; margin-bottom: var(--space-l); text-align: center; }
+  .cabecera h2 { margin-block: 0.875rem; }
+
+  .rejilla { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .tarjeta {
+    border: 1px solid var(--line); border-radius: var(--radius-l);
+    padding: 1.625rem 1.375rem; background: var(--bone);
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+  }
+  .tarjeta:hover { transform: translateY(-5px); box-shadow: 0 1rem 2.125rem rgb(62 28 74 / 0.09); border-color: #dcc8e0; }
+  .destacada {
+    grid-row: span 2; background: var(--mor); border-color: var(--mor); color: rgb(255 255 255 / 0.86);
+    display: flex; flex-direction: column; justify-content: space-between; gap: 1.375rem;
+  }
+  .destacada h3 { color: #fff; }
+  .ic {
+    display: flex; align-items: center; justify-content: center;
+    width: 2.75rem; height: 2.75rem; border-radius: 0.8125rem;
+    background: #efe4f2; color: var(--mor); margin-bottom: 1rem;
+  }
+  .destacada .ic { background: rgb(255 255 255 / 0.18); color: #fff; }
+  h3 { font-size: var(--step-1); margin-bottom: 0.4rem; }
+  .tarjeta p { font-size: var(--step--1); }
+  .unirme { background: #fff; color: var(--mor); align-self: flex-start; }
+
+  @media (max-width: 56.25rem) {
+    .rejilla { grid-template-columns: 1fr 1fr; }
+    .destacada { grid-row: span 1; }
+  }
+  @media (max-width: 32.5rem) {
+    .rejilla { grid-template-columns: 1fr; }
+  }
+</style>
