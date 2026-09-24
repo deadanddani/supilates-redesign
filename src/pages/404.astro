@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+import Button from '../components/ui/Button.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<BaseLayout title={`Página no encontrada | ${site.name}`} description="La página que buscas no existe.">
+  <section class="cuatro wrap">
+    <p class="kick">Error 404</p>
+    <h1>Esta página no existe</h1>
+    <p class="entrada">
+      Puede que el enlace esté anticuado o que hayamos movido la página. Desde el inicio
+      llegas a todo, y si buscas horarios o precios lo más rápido es escribirnos.
+    </p>
+    <div class="botones">
+      <Button href={`${base}/`}>Volver al inicio</Button>
+      <Button href={site.whatsapp} variant="green" external>Escríbenos por WhatsApp</Button>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .cuatro { padding-block: clamp(3rem, 9vw, 6.5rem) var(--space-xl); max-width: 42rem; }
+  h1 { font-size: var(--step-4); margin-block: 0.875rem 1rem; }
+  .entrada { font-size: var(--step-1); margin-bottom: 1.875rem; }
+  .botones { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+</style>

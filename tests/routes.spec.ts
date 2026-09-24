@@ -33,3 +33,17 @@ test('cada entrada del blog tiene su pagina con fecha legible por maquina', asyn
   await expect(page.locator('h1')).toHaveCount(1);
   await expect(page.locator('time[datetime]')).toHaveCount(1);
 });
+
+test('una ruta inexistente devuelve 404', async ({ page }) => {
+  const res = await page.goto('ruta-que-no-existe');
+  expect(res?.status()).toBe(404);
+  await expect(page.locator('h1')).toBeVisible();
+});
+
+test('las paginas legales advierten de que son plantilla', async ({ page }) => {
+  for (const ruta of [R.avisoLegal, R.privacidad, R.cookies]) {
+    const res = await page.goto(ruta);
+    expect(res?.status(), ruta).toBe(200);
+    await expect(page.getByRole('note')).toContainText('revisión jurídica');
+  }
+});

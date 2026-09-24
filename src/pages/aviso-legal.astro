@@ -1,0 +1,39 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { site } from '../data/site';
+---
+<LegalLayout title="Aviso legal" description="Titularidad del sitio, condiciones de uso y propiedad intelectual.">
+  <h2>Titularidad</h2>
+  <p>
+    Este sitio web corresponde a {site.name}, con domicilio en {site.address.street},
+    {site.address.postalCode} {site.address.locality}. Teléfono de contacto
+    <a href={site.phoneHref}>{site.phone}</a> y correo electrónico
+    <a href={site.emailHref}>{site.email}</a>.
+  </p>
+  <p><strong>Pendiente:</strong> NIF o CIF y, si procede, datos de inscripción registral.</p>
+
+  <h2>Condiciones de uso</h2>
+  <p>
+    El acceso a este sitio es gratuito. La información sobre clases, horarios y servicios
+    tiene carácter informativo y puede cambiar sin aviso previo.
+  </p>
+
+  <h2>Contenidos de salud</h2>
+  <p>
+    La información publicada sobre pilates y sus beneficios es de carácter general y no
+    sustituye el criterio de un profesional sanitario. Ante una lesión o una condición
+    médica, consulta con tu médico antes de empezar cualquier actividad física.
+  </p>
+
+  <h2>Propiedad intelectual</h2>
+  <p>
+    Los textos, el logotipo y la marca son titularidad de {site.name}. Las fotografías del
+    sitio proceden de bancos de imágenes con licencia de uso comercial.
+  </p>
+
+  <h2>Legislación aplicable</h2>
+  <p>
+    Se aplica la legislación española, en particular la Ley 34/2002 de Servicios de la
+    Sociedad de la Información y de Comercio Electrónico.
+  </p>
+</LegalLayout>

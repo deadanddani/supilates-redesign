@@ -1,0 +1,49 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { site } from '../data/site';
+---
+<LegalLayout title="Política de privacidad" description="Qué datos recogemos, para qué y cómo ejercer tus derechos.">
+  <h2>Responsable del tratamiento</h2>
+  <p>
+    {site.name}, {site.address.street}, {site.address.postalCode} {site.address.locality}.
+    Correo de contacto: <a href={site.emailHref}>{site.email}</a>.
+  </p>
+
+  <h2>Qué datos recogemos</h2>
+  <p>Únicamente los que nos facilitas tú:</p>
+  <ul>
+    <li><strong>Boletín:</strong> tu dirección de correo electrónico.</li>
+    <li><strong>WhatsApp y teléfono:</strong> los datos que compartas al escribirnos o llamarnos.</li>
+  </ul>
+  <p>
+    Este sitio <strong>no utiliza herramientas de analítica</strong> ni rastrea tu
+    navegación. Las tipografías se sirven desde este mismo dominio, así que tu dirección IP
+    no se comunica a ningún tercero al cargar la página.
+  </p>
+
+  <h2>Para qué los usamos</h2>
+  <ul>
+    <li>Responder a tus consultas sobre clases y horarios.</li>
+    <li>Enviarte novedades del estudio, si te has suscrito al boletín.</li>
+  </ul>
+  <p>La base legal es tu consentimiento, que puedes retirar en cualquier momento.</p>
+
+  <h2>Conservación</h2>
+  <p>
+    Conservamos tus datos mientras mantengas la suscripción o mientras dure la relación
+    como alumna o alumno, y después durante los plazos legales que correspondan.
+  </p>
+
+  <h2>Tus derechos</h2>
+  <p>
+    Puedes solicitar acceso, rectificación, supresión, oposición, limitación y portabilidad
+    escribiendo a <a href={site.emailHref}>{site.email}</a>. También puedes presentar una
+    reclamación ante la Agencia Española de Protección de Datos.
+  </p>
+
+  <h2>Comunicaciones por WhatsApp</h2>
+  <p>
+    Si nos escribes por WhatsApp, la conversación se rige además por la política de
+    privacidad de ese servicio, ajena a este sitio.
+  </p>
+</LegalLayout>
