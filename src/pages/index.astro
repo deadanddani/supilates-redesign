@@ -1,14 +1,8 @@
 ---
-import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
 ---
 
-<html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Su Pilates by Flor</title>
-  </head>
-  <body>
-    <h1>Su Pilates by Flor</h1>
-  </body>
-</html>
+<BaseLayout title={`${site.name} | Pilates con máquina en Alcalá de Henares`}>
+  <h1>{site.tagline}</h1>
+</BaseLayout>

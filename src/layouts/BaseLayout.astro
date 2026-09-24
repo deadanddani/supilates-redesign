@@ -1,0 +1,106 @@
+---
+import '../styles/global.css';
+import { site } from '../data/site';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const { title, description = site.description, ogImage = 'og.jpg' } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImageUrl = new URL(`${import.meta.env.BASE_URL}/${ogImage}`.replace(/\/+/g, '/'), Astro.site).href;
+
+/*
+ * Sin aggregateRating: su web no publica nota numerica, y declarar una cifra
+ * inventada a Google en nombre de un negocio real no es una opcion.
+ */
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'HealthAndBeautyBusiness',
+  name: site.name,
+  description: site.description,
+  telephone: site.phoneE164,
+  email: site.email,
+  url: canonical,
+  image: ogImageUrl,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.street,
+    postalCode: site.address.postalCode,
+    addressLocality: site.address.locality,
+    addressRegion: site.address.region,
+    addressCountry: site.address.country,
+  },
+  openingHoursSpecification: site.hours.map((h) => ({
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: h.schema.days,
+    opens: h.schema.opens,
+    closes: h.schema.closes,
+  })),
+  sameAs: [site.social.instagram],
+};
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    {/* Sin maximum-scale ni user-scalable: su web bloquea el zoom e incumple WCAG 1.4.4 */}
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    {/*
+      La demo replica los textos de un negocio real. Indexarla le crearia
+      contenido duplicado que competiria con su propio sitio en Google.
+      Se retira solo si esto pasa a ser la web de produccion.
+    */}
+    <meta name="robots" content="noindex, nofollow" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}/favicon.svg`.replace(/\/+/g, '/')} type="image/svg+xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="es_ES" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+  </head>
+
+  <body>
+    <a class="skip" href="#contenido">Saltar al contenido</a>
+    <slot name="header" />
+    <main id="contenido">
+      <slot />
+    </main>
+    <slot name="footer" />
+    <slot name="fab" />
+
+    <style>
+      .skip {
+        position: absolute;
+        left: 0.5rem;
+        top: -100%;
+        z-index: 100;
+        background: var(--mor);
+        color: #fff;
+        padding: 0.75rem 1.25rem;
+        border-radius: var(--radius-s);
+        font-weight: 700;
+        text-decoration: none;
+        transition: top 0.2s;
+      }
+
+      .skip:focus {
+        top: 0.5rem;
+      }
+    </style>
+  </body>
+</html>
