@@ -1,0 +1,223 @@
+/*
+ * Estilos base y utilidades compartidas.
+ * Lo especifico de cada componente vive en su propio bloque <style> con ambito.
+ */
+@import '@fontsource-variable/fraunces';
+@import '@fontsource-variable/figtree';
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem; /* la cabecera es pegajosa: que no tape el ancla */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bone);
+  color: var(--body);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden; /* red de seguridad; el test de 320px exige que nada desborde de verdad */
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--step-5);
+}
+h2 {
+  font-size: var(--step-4);
+}
+h3 {
+  font-size: var(--step-2);
+}
+
+p {
+  text-wrap: pretty;
+}
+
+em {
+  color: var(--mor);
+  font-style: italic;
+}
+
+img,
+video,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img,
+video {
+  height: auto;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--mor);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ─── utilidades ─────────────────────────────────────────────── */
+
+.wrap {
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.seccion {
+  padding-block: var(--space-xl);
+}
+
+.kick {
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ─── botones ────────────────────────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap);
+  background: var(--mor);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.6rem 1.5rem rgb(125 31 143 / 0.28);
+}
+
+.btn-g {
+  background: var(--verde);
+}
+
+.btn-g:hover {
+  box-shadow: 0 0.6rem 1.5rem rgb(46 125 50 / 0.3);
+}
+
+.btn-o {
+  background: none;
+  border-color: #c9b6ce;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.btn-o:hover {
+  border-color: var(--mor);
+  box-shadow: none;
+}
+
+/* ─── aparicion al hacer scroll ──────────────────────────────── */
+
+.rv {
+  opacity: 0;
+  transform: translateY(2.375rem);
+  transition:
+    opacity 0.75s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.75s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.rv.in {
+  opacity: 1;
+  transform: none;
+}
+
+.rv-d1 {
+  transition-delay: 0.08s;
+}
+.rv-d2 {
+  transition-delay: 0.16s;
+}
+.rv-d3 {
+  transition-delay: 0.24s;
+}
+.rv-d4 {
+  transition-delay: 0.32s;
+}
+.rv-d5 {
+  transition-delay: 0.4s;
+}
+.rv-d6 {
+  transition-delay: 0.48s;
+}
+
+/*
+ * El estudio atiende a tercera edad, embarazo y rehabilitacion.
+ * Quien tenga las animaciones desactivadas en su sistema ve la pagina
+ * quieta y completamente usable: ningun elemento se queda invisible.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  .rv {
+    opacity: 1;
+    transform: none;
+  }
+}
