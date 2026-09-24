@@ -98,8 +98,23 @@ imágenes, con la falta de ortografía incluida.
 | Páginas legales | 0 | 3 |
 | Zoom del navegador | Bloqueado | Permitido |
 
-Las cifras de Lighthouse se añadirán midiendo ambas webs en idénticas condiciones, para que
-la comparación sea un dato y no una impresión.
+### Lighthouse de la propuesta
+
+Medido con Lighthouse CI, mediana de 3 ejecuciones por ruta, perfil de escritorio, contra el
+sitio compilado:
+
+| Ruta | Rendimiento | Accesibilidad | Buenas prácticas | LCP | CLS | Bloqueo |
+| --- | --- | --- | --- | --- | --- | --- |
+| `/` | **100** | **100** | **100** | 0,41 s | 0,002 | 0 ms |
+| `/nosotros` | **100** | **100** | **100** | 0,32 s | 0,002 | 0 ms |
+| `/blog` | **100** | **100** | **100** | 0,36 s | 0,001 | 0 ms |
+
+La categoría SEO marca 66 **a propósito**: el `noindex` de la demostración la penaliza. Los
+audits de SEO que importan (título, meta descripción, idioma del documento, texto de los
+enlaces, enlaces rastreables) pasan todos. Ver `adr/0003-noindex-en-la-demo.md`.
+
+**Falta medir su web actual** en idénticas condiciones, para que la comparación sea un dato
+y no una impresión. Es el primer punto de la lista previa a la reunión.
 
 ---
 
