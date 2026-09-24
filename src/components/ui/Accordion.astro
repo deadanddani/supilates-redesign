@@ -3,8 +3,10 @@
  * Acordeon con <details>/<summary> nativos: funciona sin JavaScript y el
  * lector de pantalla ya sabe leerlo. No hay nada que hidratar.
  */
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+
 interface Props {
-  items: Array<{ pregunta: string; html: string }>;
+  items: Array<{ pregunta: string; Contenido: AstroComponentFactory }>;
   class?: string;
 }
 
@@ -13,13 +15,15 @@ const { items, class: className } = Astro.props;
 
 <div class:list={['acc', className]}>
   {
-    items.map((item) => (
+    items.map(({ pregunta, Contenido }) => (
       <details>
         <summary>
-          <span>{item.pregunta}</span>
+          <span>{pregunta}</span>
           <span class="chev" aria-hidden="true" />
         </summary>
-        <div class="cuerpo" set:html={item.html} />
+        <div class="cuerpo">
+          <Contenido />
+        </div>
       </details>
     ))
   }

@@ -1,0 +1,28 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+import Accordion from '../ui/Accordion.astro';
+
+interface Props { items: CollectionEntry<'faq'>[]; }
+const { items } = Astro.props;
+
+const preguntas = await Promise.all(
+  items.map(async (f) => ({
+    pregunta: f.data.pregunta,
+    Contenido: (await render(f)).Content,
+  })),
+);
+---
+<section class="faq seccion" id="faq">
+  <div class="wrap">
+    <p class="kick rv">Preguntas frecuentes</p>
+    <h2 class="rv rv-d1">Lo que más nos preguntáis</h2>
+    <Accordion items={preguntas} class="rv rv-d2" />
+  </div>
+</section>
+
+<style>
+  .faq { background: var(--surf); }
+  h2 { margin-block: 0.875rem var(--space-l); }
+  .faq :global(.acc) { max-width: 52rem; }
+</style>

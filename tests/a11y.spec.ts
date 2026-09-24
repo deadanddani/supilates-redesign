@@ -2,6 +2,13 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { R, RUTAS_PUBLICAS } from './rutas';
 
+/*
+ * Con las animaciones activas axe muestrea el color a mitad de la
+ * transicion de aparicion y reporta falsos contrastes. El estado
+ * asentado es el que hay que auditar.
+ */
+test.use({ reducedMotion: 'reduce' });
+
 for (const ruta of RUTAS_PUBLICAS) {
   test(`${ruta} no tiene incidencias graves de accesibilidad`, async ({ page }) => {
     const res = await page.goto(ruta);

@@ -17,7 +17,7 @@ const conTexto = await Promise.all(
     <div class="pila">
       {conTexto.map(({ data, Contenido }) => (
         <figure class="tarjeta">
-          <div class="estrellas" aria-label="5 sobre 5"><span aria-hidden="true">★★★★★</span></div>
+          <div class="estrellas" role="img" aria-label="5 estrellas sobre 5"><span aria-hidden="true">★★★★★</span></div>
           <blockquote><Contenido /></blockquote>
           <figcaption>
             <span class="quien">{data.autor}</span>
