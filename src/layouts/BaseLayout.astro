@@ -78,6 +78,7 @@ const jsonLd = {
   </head>
 
   <body>
+    <div class="progreso" id="progreso" aria-hidden="true"></div>
     <div class="tinte" id="tinte" aria-hidden="true"></div>
     <a class="skip" href="#contenido">Saltar al contenido</a>
     <Header />
@@ -87,7 +88,24 @@ const jsonLd = {
     <Footer />
     <WhatsAppFab />
 
+    <script>
+      import '../scripts/scroll';
+    </script>
+
     <style>
+      .progreso {
+        position: fixed;
+        inset-block-start: 0;
+        inset-inline-start: 0;
+        z-index: 100;
+        height: 3px;
+        width: 100%;
+        transform: scaleX(0);
+        transform-origin: 0 50%;
+        background: linear-gradient(90deg, var(--mor), var(--verde));
+        pointer-events: none;
+      }
+
       /* Velo para el viraje de fondo al llegar al CTA final. */
       .tinte {
         position: fixed;
