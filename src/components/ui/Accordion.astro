@@ -1,0 +1,92 @@
+---
+/*
+ * Acordeon con <details>/<summary> nativos: funciona sin JavaScript y el
+ * lector de pantalla ya sabe leerlo. No hay nada que hidratar.
+ */
+interface Props {
+  items: Array<{ pregunta: string; html: string }>;
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+---
+
+<div class:list={['acc', className]}>
+  {
+    items.map((item) => (
+      <details>
+        <summary>
+          <span>{item.pregunta}</span>
+          <span class="chev" aria-hidden="true" />
+        </summary>
+        <div class="cuerpo" set:html={item.html} />
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  .acc {
+    border-top: 1px solid var(--line);
+  }
+
+  details {
+    border-bottom: 1px solid var(--line);
+  }
+
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-s);
+    min-height: var(--tap);
+    padding-block: 1.25rem;
+    cursor: pointer;
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    color: var(--ink);
+    list-style: none;
+  }
+
+  /* Safari pinta su propio triangulo si no se le quita */
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary:hover {
+    color: var(--mor);
+  }
+
+  .chev {
+    position: relative;
+    flex: none;
+    width: 1rem;
+    height: 1rem;
+    transition: transform 0.25s;
+  }
+
+  .chev::before,
+  .chev::after {
+    content: '';
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--mor);
+    border-radius: 2px;
+  }
+
+  .chev::after {
+    transform: rotate(90deg);
+  }
+
+  details[open] .chev {
+    transform: rotate(45deg);
+  }
+
+  .cuerpo {
+    padding-bottom: 1.5rem;
+    max-width: 62ch;
+  }
+</style>

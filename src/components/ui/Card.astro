@@ -1,0 +1,38 @@
+---
+interface Props {
+  class?: string;
+  tone?: 'surface' | 'bone' | 'brand';
+}
+
+const { class: className, tone = 'surface' } = Astro.props;
+---
+
+<article class:list={['card', `t-${tone}`, className]}>
+  <slot />
+</article>
+
+<style>
+  .card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-l);
+    padding: clamp(1.5rem, 3vw, 2.375rem);
+  }
+
+  .t-surface {
+    background: var(--surf);
+  }
+
+  .t-bone {
+    background: var(--bone);
+  }
+
+  .t-brand {
+    background: var(--mor);
+    border-color: var(--mor);
+    color: rgb(255 255 255 / 0.88);
+  }
+
+  .t-brand :global(h3) {
+    color: #fff;
+  }
+</style>

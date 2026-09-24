@@ -1,0 +1,95 @@
+---
+/*
+ * IMPORTANTE para quien lo use: este componente se posiciona en absoluto y
+ * sobresale por el borde izquierdo a proposito. Debe colocarse como hermano
+ * de la figura, dentro de un contenedor `position: relative` SIN
+ * `overflow: hidden`. Meterlo dentro del contenedor recortado de la foto lo
+ * parte por la mitad; fue un bug real en el mockup de diseno.
+ *
+ * No recibe nota numerica: su web publica el rotulo "Excelente" y el
+ * recuento, pero ninguna cifra.
+ */
+interface Props {
+  label: string;
+  count: number;
+  source: string;
+  href?: string;
+  class?: string;
+}
+
+const { label, count, source, href, class: className } = Astro.props;
+const descripcion = `Ver los testimonios: valoración ${label.toLowerCase()} en ${count} reseñas de ${source}`;
+const Tag = href ? 'a' : 'div';
+---
+
+<Tag class:list={['badge', className]} href={href} aria-label={href ? descripcion : undefined}>
+  <span class="izq">
+    <span class="estrellas" aria-hidden="true">★★★★★</span>
+    <span class="etiqueta">{label}</span>
+  </span>
+  <span class="meta">{count} reseñas<br />en {source}</span>
+</Tag>
+
+<style>
+  .badge {
+    position: absolute;
+    inset-inline-start: -1.625rem;
+    inset-block-end: 2.625rem;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    min-height: var(--tap);
+    background: var(--surf);
+    border-radius: var(--radius-m);
+    padding: 0.875rem 1.125rem;
+    box-shadow: 0 0.875rem 2.375rem rgb(62 28 74 / 0.15);
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+      box-shadow 0.25s,
+      transform 0.25s;
+  }
+
+  a.badge:hover {
+    box-shadow: 0 1.125rem 2.75rem rgb(62 28 74 / 0.24);
+    transform: translateY(-2px);
+  }
+
+  .estrellas {
+    display: block;
+    color: var(--star);
+    font-size: 0.8rem;
+    letter-spacing: 1.5px;
+    line-height: 1;
+  }
+
+  .etiqueta {
+    display: block;
+    margin-top: 0.25rem;
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    color: var(--mor);
+    line-height: 1;
+  }
+
+  .meta {
+    font-size: var(--step--1);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    line-height: 1.35;
+  }
+
+  @media (max-width: 53.75rem) {
+    .badge {
+      inset-inline-start: 0.75rem;
+      inset-block-end: -1.125rem;
+      padding: 0.7rem 0.95rem;
+    }
+
+    .etiqueta {
+      font-size: var(--step-0);
+    }
+  }
+</style>
