@@ -15,14 +15,19 @@ const preguntas = await Promise.all(
 ---
 <section class="faq seccion" id="faq">
   <div class="wrap">
-    <p class="kick rv">Preguntas frecuentes</p>
-    <h2 class="rv rv-d1">Lo que más nos preguntáis</h2>
-    <Accordion items={preguntas} class="rv rv-d2" />
+    <div class="rejilla">
+      <h2 class="rv">Lo que más <em>nos preguntáis</em></h2>
+      <Accordion items={preguntas} class="rv rv-d1" />
+    </div>
   </div>
 </section>
 
 <style>
   .faq { background: var(--surf); }
-  h2 { margin-block: 0.875rem var(--space-l); }
-  .faq :global(.acc) { max-width: 52rem; }
+  .rejilla { display: grid; grid-template-columns: 0.7fr 1.3fr; gap: var(--space-l); align-items: start; }
+  h2 { max-width: 10ch; position: sticky; inset-block-start: 7rem; }
+  @media (max-width: 53.75rem) {
+    .rejilla { grid-template-columns: 1fr; gap: var(--space-m); }
+    h2 { position: static; max-width: 14ch; }
+  }
 </style>
