@@ -9,7 +9,9 @@ import Icon from '../ui/Icon.astro';
 
 <style>
   .fab {
-    position: fixed; inset-inline-end: 1.125rem; inset-block-end: 1.125rem; z-index: 60;
+    position: fixed; z-index: var(--z-fab);
+    inset-inline-end: max(1.125rem, env(safe-area-inset-right));
+    inset-block-end: max(1.125rem, env(safe-area-inset-bottom));
     display: flex; align-items: center; justify-content: center;
     width: 3.5rem; height: 3.5rem; border-radius: 50%;
     background: #25d366; color: #0b3d1c;

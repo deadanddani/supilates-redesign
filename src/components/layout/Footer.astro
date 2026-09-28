@@ -51,11 +51,11 @@ const anyo = new Date().getFullYear();
       <h2>Newsletter</h2>
       <p>Consejos y novedades del estudio.</p>
       <form class="alta" id="alta-newsletter" novalidate>
-        <label class="visually-hidden" for="email-alta">Correo electrónico</label>
-        <input id="email-alta" name="email" type="email" required placeholder="Correo electrónico" autocomplete="email" />
+        <label class="etiqueta" for="email-alta">Tu correo electrónico</label>
+        <input id="email-alta" name="email" type="email" required placeholder="nombre@correo.com…" autocomplete="email" spellcheck="false" aria-describedby="aviso-alta" />
         <button type="submit">Suscribirse</button>
       </form>
-      <p class="aviso" id="aviso-alta" role="status"></p>
+      <p class="aviso" id="aviso-alta" role="status" aria-live="polite"></p>
     </div>
   </div>
 
@@ -81,21 +81,23 @@ const anyo = new Date().getFullYear();
     if (!aviso) return;
     const campo = form.querySelector<HTMLInputElement>('#email-alta');
     if (!campo?.value || !campo.checkValidity()) {
-      aviso.textContent = 'Revisa el correo, parece que falta algo.';
+      aviso.textContent = 'Escribe un correo completo, por ejemplo nombre@correo.com.';
       aviso.dataset.tono = 'error';
+      campo?.setAttribute('aria-invalid', 'true');
       campo?.focus();
       return;
     }
     aviso.textContent = 'Gracias. El alta estará disponible muy pronto.';
     aviso.dataset.tono = 'ok';
+    campo.removeAttribute('aria-invalid');
     form.reset();
   });
 </script>
 
 <style>
   .pie {
-    background: #2e1b33;
-    color: rgb(255 255 255 / 0.76);
+    background: var(--mor-d);
+    color: rgb(255 255 255 / 0.78);
     font-size: var(--step--1);
     position: relative;
     z-index: 1;
@@ -112,7 +114,7 @@ const anyo = new Date().getFullYear();
     font-family: var(--font-body);
     font-size: var(--step--1);
     font-weight: 700;
-    letter-spacing: 0.17em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: #fff;
     margin-bottom: 1rem;
@@ -188,6 +190,10 @@ const anyo = new Date().getFullYear();
     border-color: var(--mor);
   }
 
+  .pie :focus-visible {
+    outline-color: #fff;
+  }
+
   .alta {
     display: flex;
     gap: 0.5rem;
@@ -195,12 +201,18 @@ const anyo = new Date().getFullYear();
     flex-wrap: wrap;
   }
 
+  .etiqueta {
+    flex: 1 1 100%;
+    color: #fff;
+    font-weight: 600;
+  }
+
   input {
     flex: 1 1 8rem;
     min-height: var(--tap);
     min-width: 0;
     background: transparent;
-    border: 1px solid rgb(255 255 255 / 0.3);
+    border: 1px solid rgb(255 255 255 / 0.4);
     border-radius: var(--radius-s);
     padding-inline: 0.875rem;
     color: #fff;
@@ -208,19 +220,44 @@ const anyo = new Date().getFullYear();
   }
 
   input::placeholder {
-    color: rgb(255 255 255 / 0.5);
+    color: rgb(255 255 255 / 0.6);
+  }
+
+  input[aria-invalid='true'] {
+    border-color: #ffb4a8;
+  }
+
+  input:focus-visible {
+    outline-color: #fff;
+    border-color: #fff;
   }
 
   button {
     min-height: var(--tap);
-    background: var(--verde);
-    color: #fff;
+    background: #fff;
+    color: var(--mor);
     border: 0;
-    border-radius: var(--radius-s);
-    padding-inline: 1.125rem;
+    border-radius: var(--radius-pill);
+    padding-inline: 1.25rem;
     font: inherit;
     font-weight: 700;
     cursor: pointer;
+    touch-action: manipulation;
+    transition:
+      background-color 0.2s,
+      transform 0.2s var(--ease-out);
+  }
+
+  button:hover {
+    background: var(--lila);
+  }
+
+  button:active {
+    transform: scale(0.98);
+  }
+
+  button:focus-visible {
+    outline-color: #fff;
   }
 
   .aviso {
@@ -236,12 +273,26 @@ const anyo = new Date().getFullYear();
     color: #ffb4a8;
   }
 
+  /* la linea va al ancho del contenido, no del contenedor con su margen */
   .barra {
-    border-top: 1px solid rgb(255 255 255 / 0.15);
-    padding-block: 1.125rem;
+    padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+    background: linear-gradient(rgb(255 255 255 / 0.15), rgb(255 255 255 / 0.15)) top center / calc(100% - 2 * var(--gutter)) 1px no-repeat;
+    padding-top: 0.75rem;
     display: flex;
-    gap: 1.25rem;
+    align-items: center;
+    gap: 0 1.5rem;
     flex-wrap: wrap;
+  }
+
+  .barra span {
+    margin-inline-end: auto;
+  }
+
+  @media (max-width: 30rem) {
+    .barra span {
+      flex: 1 1 100%;
+      padding-block: 0.75rem 0.25rem;
+    }
   }
 
   @media (max-width: 51.25rem) {
