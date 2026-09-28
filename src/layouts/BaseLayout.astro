@@ -50,8 +50,9 @@ const jsonLd = {
 <html lang="es">
   <head>
     <meta charset="utf-8" />
+    <meta name="theme-color" content="#f8f5f9" />
     {/* Sin maximum-scale ni user-scalable: su web bloquea el zoom e incumple WCAG 1.4.4 */}
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
     {/*
       La demo replica los textos de un negocio real. Indexarla le crearia
@@ -79,8 +80,10 @@ const jsonLd = {
   </head>
 
   <body>
+    {/* Centinelas: al salir de pantalla por arriba compactan la cabecera y muestran el boton flotante. */}
+    <div class="centinela" id="centinela-cabecera" aria-hidden="true"></div>
+    <div class="centinela" id="centinela-fab" aria-hidden="true"></div>
     <div class="progreso" id="progreso" aria-hidden="true"></div>
-    <div class="tinte" id="tinte" aria-hidden="true"></div>
     <a class="skip" href="#contenido">Saltar al contenido</a>
     <Header />
     <main id="contenido">
@@ -94,34 +97,67 @@ const jsonLd = {
     </script>
 
     <style>
-      .progreso {
-        position: fixed;
-        inset-block-start: 0;
+      body {
+        position: relative;
+      }
+
+      .centinela {
+        position: absolute;
         inset-inline-start: 0;
-        z-index: 100;
-        height: 3px;
-        width: 100%;
-        transform: scaleX(0);
-        transform-origin: 0 50%;
-        background: linear-gradient(90deg, var(--mor), var(--verde));
+        width: 1px;
+        height: 1px;
         pointer-events: none;
       }
 
-      /* Velo para el viraje de fondo al llegar al CTA final. */
-      .tinte {
-        position: fixed;
-        inset: 0;
-        z-index: -2;
-        background: var(--mor-d);
-        opacity: 0;
-        pointer-events: none;
+      #centinela-cabecera {
+        top: 40px;
+      }
+
+      #centinela-fab {
+        top: 55vh;
+      }
+
+      /*
+       * Barra de progreso ligada al scroll del documento, sin JavaScript.
+       * Sin soporte de animation-timeline no se muestra: es un adorno.
+       */
+      .progreso {
+        display: none;
+      }
+
+      @supports (animation-timeline: scroll()) {
+        @media (prefers-reduced-motion: no-preference) {
+          .progreso {
+            display: block;
+            position: fixed;
+            inset-block-start: 0;
+            inset-inline-start: 0;
+            z-index: var(--z-top);
+            height: 3px;
+            width: 100%;
+            transform-origin: 0 50%;
+            background: var(--mor);
+            pointer-events: none;
+            animation: progreso linear both;
+            animation-timeline: scroll(root);
+          }
+        }
+      }
+
+      @keyframes progreso {
+        from {
+          transform: scaleX(0);
+        }
+        to {
+          transform: scaleX(1);
+        }
       }
 
       .skip {
         position: absolute;
         left: 0.5rem;
         top: -100%;
-        z-index: 100;
+        z-index: var(--z-top);
         background: var(--mor);
         color: #fff;
         padding: 0.75rem 1.25rem;
