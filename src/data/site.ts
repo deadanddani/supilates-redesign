@@ -32,8 +32,8 @@ export const site = {
 
   hours: [
     {
-      days: 'Lun – Vie',
-      time: '8:00 – 21:00',
+      days: 'Lunes a viernes',
+      time: '8:00 a 21:00',
       schema: {
         days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
         opens: '08:00',
@@ -41,14 +41,17 @@ export const site = {
       },
     },
     {
-      days: 'Sáb',
-      time: '10:00 – 13:00',
+      days: 'Sábados',
+      time: '10:00 a 13:00',
       schema: { days: ['Saturday'], opens: '10:00', closes: '13:00' },
     },
   ],
 
   /* Acortador de terceros: verificar que sigue vivo antes de presentar. */
   whatsapp: 'https://wa.link/4oru75',
+
+  /* Una sola etiqueta para la unica accion de la web: escribir por WhatsApp. */
+  cta: 'Reserva tu clase',
 
   /*
    * Solo Instagram. Los enlaces de Facebook y YouTube de su web no tienen

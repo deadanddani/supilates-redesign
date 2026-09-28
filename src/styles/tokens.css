@@ -1,52 +1,76 @@
 /*
  * Tokens de Su Pilates by Flor.
- * Direccion "editorial calido": mantiene el morado y el verde de su logo
- * bajando la saturacion, en vez de competir con la fotografia.
+ * Un solo acento, el morado de su logo, sobre neutros tenidos del mismo
+ * morado: el fondo ya no es hueso calido sino un blanco lila muy bajo, para
+ * que toda la pagina hable en una sola familia de color.
+ * El verde del logo queda reservado al boton flotante de WhatsApp, donde
+ * funciona como senal reconocible y no compite con el morado.
  * Todas las parejas texto/fondo estan verificadas a WCAG AA en
  * tests/contrast.spec.ts. Cambiar un valor aqui rompe ese test si baja de 4.5:1.
  */
 :root {
   /* color */
-  --bone: #f7f3ee;   /* fondo principal: hueso, no blanco puro */
-  --surf: #ffffff;   /* superficies elevadas */
-  --ink: #3f1c4a;    /* titulares */
-  --body: #5c4a62;   /* texto corrido */
+  --bone: #f8f5f9;   /* fondo principal: blanco con un punto de lila */
+  --surf: #fdfcfd;   /* superficies elevadas, sin llegar al blanco puro */
+  --ink: #2f1537;    /* titulares */
+  --body: #574a5d;   /* texto corrido */
   --mor: #7d1f8f;    /* morado de marca (#82008c del logo, rebajado), accion principal */
-  --mor-d: #3f1c4a;  /* morado profundo, fondos oscuros */
+  --mor-h: #6a1879;  /* morado al pasar el raton */
+  --mor-d: #2f1537;  /* morado profundo, fondos oscuros */
   --verde: #2e7d32;  /* verde de marca (#32d232 del logo) bajado hasta cumplir AA en blanco */
-  --lila: #f0e8f2;   /* fondo de seccion */
-  --line: #e7dcea;   /* bordes */
+  --lila: #efe7f2;   /* fondo de seccion */
+  --lila-2: #e6d9ea; /* celdas y bloques sobre lila */
+  --line: #e4d8e8;   /* bordes */
   --star: #8a6510;   /* dorado de las estrellas, oscurecido hasta AA sobre blanco */
-  --muted: #6b4f72;  /* rotulos secundarios */
+  --muted: #6b5572;  /* rotulos secundarios */
+
+  /* sombras tenidas del morado, nunca negras */
+  --shadow-s: 0 1px 2px rgb(47 21 55 / 0.06), 0 4px 12px rgb(47 21 55 / 0.05);
+  --shadow-m: 0 2px 4px rgb(47 21 55 / 0.05), 0 18px 40px -12px rgb(47 21 55 / 0.18);
 
   /* tipografia */
-  --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  --font-display: 'Bricolage Grotesque Variable', 'Figtree Variable', system-ui, sans-serif;
   --font-body: 'Figtree Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   /* escala fluida: sin saltos en los puntos de ruptura */
-  --step--1: clamp(0.83rem, 0.8rem + 0.15vw, 0.9rem);
+  --step--1: clamp(0.84rem, 0.81rem + 0.15vw, 0.92rem);
   --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.09rem);
-  --step-1: clamp(1.2rem, 1.1rem + 0.5vw, 1.45rem);
-  --step-2: clamp(1.44rem, 1.25rem + 0.95vw, 1.94rem);
-  --step-3: clamp(1.73rem, 1.4rem + 1.65vw, 2.59rem);
-  --step-4: clamp(2.07rem, 1.53rem + 2.7vw, 3.45rem);
-  --step-5: clamp(2.49rem, 1.6rem + 4.45vw, 4.6rem);
+  --step-1: clamp(1.18rem, 1.1rem + 0.4vw, 1.4rem);
+  --step-2: clamp(1.4rem, 1.24rem + 0.8vw, 1.85rem);
+  --step-3: clamp(1.7rem, 1.4rem + 1.5vw, 2.5rem);
+  --step-4: clamp(2.05rem, 1.55rem + 2.5vw, 3.3rem);
+  --step-5: clamp(2.4rem, 1.6rem + 4vw, 4.4rem);
 
   /* espacio */
   --space-xs: 0.5rem;
   --space-s: 1rem;
   --space-m: 1.75rem;
   --space-l: clamp(2.5rem, 5vw, 4rem);
-  --space-xl: clamp(4.5rem, 11vw, 8rem);
+  --space-xl: clamp(4.5rem, 10vw, 7.5rem);
 
-  /* forma */
+  /*
+   * forma: una sola regla en toda la web.
+   * Botones en pastilla, fotos y paneles a 20px, piezas interiores a 12px,
+   * campos de formulario a 8px.
+   */
   --radius-s: 0.5rem;
-  --radius-m: 1.125rem;
-  --radius-l: 1.375rem;
+  --radius-m: 0.75rem;
+  --radius-l: 1.25rem;
   --radius-pill: 99rem;
 
+  /* capas */
+  --z-header: 50;
+  --z-fab: 60;
+  --z-top: 100;
+
+  /* movimiento */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
   /* medida */
-  --wrap: 71.25rem;
-  --gutter: clamp(1.25rem, 5vw, 2.5rem);
+  --wrap: 74rem;
+  --gutter: clamp(1rem, 5vw, 2.5rem);
+  /* margen lateral que respeta el notch del movil en horizontal */
+  --pad-l: max(var(--gutter), env(safe-area-inset-left));
+  --pad-r: max(var(--gutter), env(safe-area-inset-right));
   --tap: 44px; /* area pulsable minima, WCAG 2.5.5 */
 }

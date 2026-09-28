@@ -2,7 +2,7 @@
  * Estilos base y utilidades compartidas.
  * Lo especifico de cada componente vive en su propio bloque <style> con ambito.
  */
-@import '@fontsource-variable/fraunces';
+@import '@fontsource-variable/bricolage-grotesque';
 @import '@fontsource-variable/figtree';
 @import './tokens.css';
 
@@ -17,9 +17,11 @@
 }
 
 html {
+  color-scheme: light;
   scroll-behavior: smooth;
   scroll-padding-top: 5.5rem; /* la cabecera es pegajosa: que no tape el ancla */
   -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgb(125 31 143 / 0.15);
 }
 
 body {
@@ -37,10 +39,11 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
+  font-optical-sizing: auto;
   color: var(--ink);
-  font-weight: 400;
-  letter-spacing: -0.025em;
-  line-height: 1.08;
+  font-weight: 560;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
   text-wrap: balance;
 }
 
@@ -52,6 +55,9 @@ h2 {
 }
 h3 {
   font-size: var(--step-2);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
 }
 
 p {
@@ -61,6 +67,15 @@ p {
 em {
   color: var(--mor);
   font-style: italic;
+}
+
+/*
+ * Bricolage no tiene cursiva: en los titulares el acento es de color y de
+ * peso, no una oblicua sintetica.
+ */
+:is(h1, h2, h3) em {
+  font-style: normal;
+  font-weight: 400;
 }
 
 img,
@@ -85,22 +100,28 @@ a {
   border-radius: 2px;
 }
 
+::selection {
+  background: var(--mor);
+  color: #fff;
+}
+
 /* ─── utilidades ─────────────────────────────────────────────── */
 
 .wrap {
   max-width: var(--wrap);
   margin-inline: auto;
-  padding-inline: var(--gutter);
+  /* en horizontal, el notch del movil no se come el contenido */
+  padding-inline: var(--pad-l) var(--pad-r);
 }
 
 .seccion {
-  padding-block: var(--space-xl);
+  padding-block: var(--space-xl) calc(var(--space-xl) * 1.1);
 }
 
 .kick {
   font-size: var(--step--1);
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -122,10 +143,11 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
   min-height: var(--tap);
   background: var(--mor);
   color: #fff;
-  padding: 0.75rem 1.5rem;
+  padding: 0.8rem 1.6rem;
   border: 1.5px solid transparent;
   border-radius: var(--radius-pill);
   font-family: var(--font-body);
@@ -133,15 +155,25 @@ a {
   font-weight: 700;
   text-align: center;
   text-decoration: none;
+  white-space: nowrap;
   cursor: pointer;
+  touch-action: manipulation;
   transition:
-    transform 0.2s,
-    box-shadow 0.2s;
+    transform 0.25s var(--ease-out),
+    background-color 0.25s,
+    border-color 0.25s,
+    box-shadow 0.25s;
 }
 
 .btn:hover {
+  background: var(--mor-h);
   transform: translateY(-2px);
-  box-shadow: 0 0.6rem 1.5rem rgb(125 31 143 / 0.28);
+  box-shadow: 0 10px 24px -10px rgb(125 31 143 / 0.55);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: none;
 }
 
 .btn-g {
@@ -149,29 +181,62 @@ a {
 }
 
 .btn-g:hover {
-  box-shadow: 0 0.6rem 1.5rem rgb(46 125 50 / 0.3);
+  background: #276c2b;
+  box-shadow: 0 10px 24px -10px rgb(46 125 50 / 0.55);
 }
 
 .btn-o {
   background: none;
-  border-color: #c9b6ce;
+  border-color: #cdb9d3;
   color: var(--ink);
   font-weight: 600;
 }
 
 .btn-o:hover {
+  background: var(--surf);
   border-color: var(--mor);
   box-shadow: none;
+}
+
+/* enlace de texto con flecha: la accion secundaria no necesita otro boton */
+.enlace {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: var(--tap);
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: #cdb9d3;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.3em;
+  transition:
+    color 0.2s,
+    text-decoration-color 0.2s;
+}
+
+.enlace::after {
+  content: '→';
+  transition: transform 0.25s var(--ease-out);
+}
+
+.enlace:hover {
+  color: var(--mor);
+  text-decoration-color: currentColor;
+}
+
+.enlace:hover::after {
+  transform: translateX(3px);
 }
 
 /* ─── aparicion al hacer scroll ──────────────────────────────── */
 
 .rv {
   opacity: 0;
-  transform: translateY(2.375rem);
+  transform: translateY(1.75rem);
   transition:
-    opacity 0.75s cubic-bezier(0.22, 0.61, 0.36, 1),
-    transform 0.75s cubic-bezier(0.22, 0.61, 0.36, 1);
+    opacity 0.8s var(--ease-out),
+    transform 0.8s var(--ease-out);
 }
 
 .rv.in {
@@ -180,22 +245,33 @@ a {
 }
 
 .rv-d1 {
-  transition-delay: 0.08s;
+  transition-delay: 0.07s;
 }
 .rv-d2 {
-  transition-delay: 0.16s;
+  transition-delay: 0.14s;
 }
 .rv-d3 {
-  transition-delay: 0.24s;
+  transition-delay: 0.21s;
 }
 .rv-d4 {
-  transition-delay: 0.32s;
+  transition-delay: 0.28s;
 }
 .rv-d5 {
-  transition-delay: 0.4s;
+  transition-delay: 0.35s;
 }
 .rv-d6 {
-  transition-delay: 0.48s;
+  transition-delay: 0.42s;
+}
+
+/*
+ * Sin JavaScript no hay IntersectionObserver que anada .in: el contenido se
+ * muestra tal cual en vez de quedarse invisible.
+ */
+@media (scripting: none) {
+  .rv {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /*
