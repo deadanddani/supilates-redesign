@@ -4,21 +4,47 @@ import Button from '../ui/Button.astro';
 ---
 <section class="cta seccion" id="cta">
   <div class="wrap">
-    <p class="kick rv">Toma tu primera clase</p>
-    <h2 class="rv rv-d1">Bien, ¡llegó el momento!</h2>
-    <p class="entrada rv rv-d2">
-      Contáctame y comienza en el horario que puedas. Me dices si prefieres por la mañana
-      o por la tarde y lo arreglamos. Cualquier duda me escribes y te llamo.
-    </p>
-    <Button href={site.whatsapp} variant="green" external class="rv rv-d3">Escríbeme por WhatsApp</Button>
+    <div class="panel rv">
+      <h2>Bien, <em>¡llegó el momento!</em></h2>
+      <p class="entrada">
+        Contáctame y comienza en el horario que puedas. Me dices si prefieres por la mañana
+        o por la tarde y lo arreglamos. Cualquier duda me escribes y te llamo.
+      </p>
+      <div class="acciones">
+        <Button href={site.whatsapp} external class="claro">{site.cta}</Button>
+        <a class="tel" href={site.phoneHref}>o llama al {site.phone}</a>
+      </div>
+    </div>
   </div>
 </section>
 
 <style>
-  .cta { text-align: center; position: relative; }
-  h2 { margin-block: 1rem 1.125rem; transition: color 0.5s; }
-  .entrada { max-width: 56ch; margin-inline: auto; margin-bottom: 2rem; font-size: var(--step-1); transition: color 0.5s; }
-  .cta:global(.lit) h2 { color: #fff; }
-  .cta:global(.lit) .entrada { color: rgb(255 255 255 / 0.84); }
-  .cta:global(.lit) .kick { color: #c9a6d0; }
+  .panel {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    text-align: center;
+    background-color: var(--mor-d);
+    background-image:
+      radial-gradient(ellipse 60% 80% at 50% 120%, rgb(125 31 143 / 0.7), transparent 70%),
+      radial-gradient(circle at 0% 0%, rgb(255 255 255 / 0.06), transparent 40%);
+    color: rgb(255 255 255 / 0.84);
+    border-radius: var(--radius-l);
+    padding: clamp(3rem, 8vw, 6rem) clamp(1.25rem, 5vw, 4rem);
+  }
+
+  h2 { color: #fff; margin-bottom: 1.25rem; }
+  h2 em { color: #e3c7ea; }
+  .entrada { max-width: 50ch; margin-inline: auto; margin-bottom: 2.25rem; font-size: var(--step-1); line-height: 1.5; }
+
+  .acciones { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.75rem 1.5rem; }
+  .claro { background: #fff; color: var(--mor); }
+  .claro:hover { background: var(--lila); color: var(--mor-h); box-shadow: 0 10px 30px -10px rgb(0 0 0 / 0.5); }
+  .tel {
+    display: inline-flex; align-items: center; min-height: var(--tap);
+    color: #fff; font-weight: 600;
+    text-decoration: underline; text-decoration-color: rgb(255 255 255 / 0.4); text-underline-offset: 0.3em;
+    font-variant-numeric: tabular-nums;
+  }
+  .tel:hover { text-decoration-color: #fff; }
 </style>

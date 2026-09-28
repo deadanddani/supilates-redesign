@@ -1,27 +1,40 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { render } from 'astro:content';
+import { site } from '../../data/site';
 
-interface Props { items: CollectionEntry<'testimonios'>[]; }
-const { items } = Astro.props;
+interface Props {
+  items: CollectionEntry<'testimonios'>[];
+  /* Donde la portada ya da la valoracion, no se repite. */
+  resumen?: boolean;
+}
+const { items, resumen = true } = Astro.props;
 const conTexto = await Promise.all(
   items.map(async (t) => ({ data: t.data, Contenido: (await render(t)).Content })),
 );
 ---
-{/* Las tarjetas se apilan una sobre otra con position: sticky. */}
+{/* Muro en columnas: cada reseña ocupa lo que mide, sin forzar alturas iguales. */}
 <section class="testimonios seccion" id="testimonios">
   <div class="wrap">
-    <p class="kick rv">Testimonios</p>
-    <h2 class="rv rv-d1">Lo que dicen sus alumnas</h2>
+    <header class="cabecera">
+      <h2 class="rv">Lo que dicen <em>sus alumnas</em></h2>
+      {resumen && <p class="resumen rv rv-d1">
+        <span class="estrellas" aria-hidden="true">★★★★★</span>
+        <span><strong>{site.reviews.label}</strong> en {site.reviews.count} reseñas de {site.reviews.source}</span>
+      </p>}
+    </header>
 
-    <div class="pila">
-      {conTexto.map(({ data, Contenido }) => (
-        <figure class="tarjeta">
+    <div class="muro">
+      {conTexto.map(({ data, Contenido }, i) => (
+        <figure class:list={['tarjeta', 'rv', `rv-d${Math.min(i + 1, 6)}`]}>
           <div class="estrellas" role="img" aria-label="5 estrellas sobre 5"><span aria-hidden="true">★★★★★</span></div>
           <blockquote><Contenido /></blockquote>
           <figcaption>
-            <span class="quien">{data.autor}</span>
-            <span class="fuente">{data.fuente}</span>
+            <span class="inicial" aria-hidden="true">{data.autor.charAt(0)}</span>
+            <span>
+              <span class="quien">{data.autor}</span>
+              <span class="fuente">{data.fuente}</span>
+            </span>
           </figcaption>
         </figure>
       ))}
@@ -31,27 +44,45 @@ const conTexto = await Promise.all(
 
 <style>
   .testimonios { background: var(--lila); }
-  h2 { margin-block: 0.875rem var(--space-l); }
-  .pila { display: grid; }
-  .tarjeta {
-    position: sticky; margin: 0 0 1.375rem;
-    background: var(--surf); border-radius: var(--radius-l);
-    padding: clamp(1.75rem, 4vw, 3.25rem);
-    box-shadow: 0 -0.375rem 2.5rem rgb(62 28 74 / 0.09);
-  }
-  .tarjeta:nth-child(1) { inset-block-start: 16vh; }
-  .tarjeta:nth-child(2) { inset-block-start: 18vh; }
-  .tarjeta:nth-child(3) { inset-block-start: 20vh; }
-  .tarjeta:nth-child(4) { inset-block-start: 22vh; }
-  .estrellas { color: var(--star); letter-spacing: 4px; margin-bottom: 0.875rem; }
-  blockquote :global(p) {
-    font-family: var(--font-display); font-size: var(--step-2); line-height: 1.35;
-    color: var(--ink); font-weight: 300; margin-bottom: 1.25rem;
-  }
-  figcaption { display: grid; gap: 0.1rem; }
-  .quien { font-weight: 700; color: var(--ink); }
-  .fuente { font-size: var(--step--1); color: var(--muted); }
 
-  @media (prefers-reduced-motion: reduce) { .tarjeta { position: static; } }
-  @media (max-width: 47.5rem) { .tarjeta { position: static; } }
+  .cabecera {
+    display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between;
+    gap: 1rem 2rem; margin-bottom: var(--space-l);
+  }
+  h2 { max-width: 14ch; }
+  .resumen { display: inline-flex; align-items: center; gap: 0.75rem; color: var(--ink); }
+  .resumen strong { font-weight: 700; }
+
+  .muro { columns: 2 22rem; column-gap: 1rem; }
+
+  .tarjeta {
+    break-inside: avoid;
+    margin: 0 0 1rem;
+    background: var(--surf);
+    border-radius: var(--radius-l);
+    padding: clamp(1.5rem, 3.5vw, 2.25rem);
+  }
+  .estrellas { color: var(--star); letter-spacing: 3px; font-size: 0.9rem; }
+  .tarjeta .estrellas { margin-bottom: 1rem; }
+
+  blockquote { margin: 0; }
+  blockquote :global(p) {
+    font-family: var(--font-display); font-size: var(--step-1); font-weight: 400;
+    line-height: 1.4; letter-spacing: -0.015em; color: var(--ink);
+  }
+  blockquote :global(p)::before { content: '“'; }
+  blockquote :global(p)::after { content: '”'; }
+
+  figcaption {
+    display: flex; align-items: center; gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+  .inicial {
+    flex: none; display: grid; place-items: center;
+    width: 2.5rem; height: 2.5rem; border-radius: var(--radius-m);
+    background: var(--lila); color: var(--mor);
+    font-family: var(--font-display); font-weight: 600;
+  }
+  .quien { display: block; font-weight: 700; color: var(--ink); line-height: 1.3; }
+  .fuente { display: block; font-size: var(--step--1); color: var(--muted); }
 </style>
