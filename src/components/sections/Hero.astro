@@ -2,31 +2,24 @@
 import { Image } from 'astro:assets';
 import { site } from '../../data/site';
 import Button from '../ui/Button.astro';
-import RatingBadge from '../ui/RatingBadge.astro';
 import heroImg from '../../assets/images/hero-reformer.jpg';
 ---
 
 <section class="hero">
-  <div class="mancha" id="mancha" aria-hidden="true"></div>
-
   <div class="texto">
-    <p class="kick">Pilates máquina · {site.city}</p>
-    <h1>Fortalece tu cuerpo,<br /><em>mente y espíritu</em></h1>
+    <p class="kick">Pilates con máquina en {site.city}</p>
+    <h1>Fortalece tu cuerpo, <em>mente y espíritu</em></h1>
     <p class="entrada">
-      Clases de 55 minutos en grupos de 4 o 5 personas, con una rutina adaptada a tus
-      necesidades y capacidades.
+      Clases de 55 minutos en grupos de 4 o 5 personas, con una rutina adaptada a ti.
     </p>
     <div class="botones">
-      <Button href={site.whatsapp} external>Agenda tu primera clase</Button>
-      <Button href="#horarios" variant="outline">Ver horarios</Button>
+      <Button href={site.whatsapp} external>{site.cta}</Button>
+      <a class="enlace" href="#horarios">Ver horarios</a>
     </div>
   </div>
 
-  {/*
-    El badge va FUERA de .media, que es quien lleva overflow:hidden y el
-    border-radius eliptico. Dentro, la mascara curva se lo come.
-  */}
   <div class="figura">
+    <div class="halo" aria-hidden="true"></div>
     <div class="media">
       <Image
         src={heroImg}
@@ -38,92 +31,141 @@ import heroImg from '../../assets/images/hero-reformer.jpg';
         id="hero-img"
       />
     </div>
-    <RatingBadge
-      label={site.reviews.label}
-      count={site.reviews.count}
-      source={site.reviews.source}
-      href="#testimonios"
-    />
   </div>
 </section>
 
 <style>
   .hero {
-    position: relative;
-    overflow-x: clip; /* la mancha sangra a proposito; que no genere scroll */
+    overflow-x: clip; /* el halo sangra a proposito; que no genere scroll */
     max-width: var(--wrap);
     margin-inline: auto;
-    padding: clamp(1.5rem, 4vw, 3.5rem) var(--gutter) clamp(3.5rem, 8vw, 6.5rem);
+    padding-block: clamp(1.5rem, 4vw, 3rem) clamp(3rem, 6vw, 5rem);
+    padding-inline: var(--pad-l) var(--pad-r);
     display: grid;
-    grid-template-columns: 1.02fr 0.98fr;
-    gap: clamp(1.875rem, 5vw, 3.75rem);
+    grid-template-columns: 1.3fr 0.7fr;
+    gap: clamp(2rem, 6vw, 5rem);
     align-items: center;
-  }
-
-  .mancha {
-    position: absolute;
-    inset-inline-end: -6%;
-    inset-block-start: -12%;
-    z-index: -1;
-    width: min(46vw, 34rem);
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background: radial-gradient(circle at 34% 34%, rgb(125 31 143 / 0.13), transparent 66%);
-    will-change: transform;
-    pointer-events: none;
   }
 
   h1 {
     /* Escala propia: el hero ocupa media columna, no el ancho completo. */
-    font-size: clamp(2.25rem, 1.5rem + 3.2vw, 3.6rem);
-    margin-block: 1.25rem 1.375rem;
+    font-size: clamp(2.5rem, 1.5rem + 3.4vw, 4.25rem);
+    line-height: 1;
+    letter-spacing: -0.045em;
+    margin-block: 1.25rem 1.5rem;
   }
 
   .entrada {
     font-size: var(--step-1);
-    max-width: 36ch;
-    margin-bottom: 1.875rem;
+    line-height: 1.5;
+    max-width: 30ch;
+    margin-bottom: 2rem;
   }
 
   .botones {
     display: flex;
-    gap: 0.75rem;
+    align-items: center;
+    gap: 0.75rem 1.75rem;
     flex-wrap: wrap;
   }
 
   .figura {
-    position: relative; /* sin overflow: el badge sobresale a proposito */
+    position: relative;
+    isolation: isolate;
+  }
+
+  /* Luz suave detras del arco: fija, sin JavaScript. */
+  .halo {
+    position: absolute;
+    inset: -8% -10% auto auto;
+    z-index: -1;
+    width: 80%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, rgb(125 31 143 / 0.14), transparent 65%);
+    pointer-events: none;
   }
 
   .media {
     overflow: hidden;
-    border-radius: 50% 50% var(--radius-m) var(--radius-m) / 34% 34% var(--radius-m) var(--radius-m);
-    aspect-ratio: 3 / 3.6;
+    border-radius: 50% 50% var(--radius-l) var(--radius-l) / 32% 32% var(--radius-l) var(--radius-l);
+    aspect-ratio: 3 / 3.7;
+    box-shadow: var(--shadow-m);
   }
 
   .media :global(img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    will-change: transform;
+  }
+
+  /* Parallax ligado al scroll: la foto se desplaza y amplia un poco al salir. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .media :global(img) {
+        animation: deriva linear both;
+        animation-timeline: view();
+        animation-range: exit 0% exit 100%;
+      }
+    }
+  }
+
+  @keyframes deriva {
+    to {
+      transform: translateY(-7%) scale(1.08);
+    }
+  }
+
+  /* Entrada del hero al cargar: primero el texto, luego la foto. */
+  @media (prefers-reduced-motion: no-preference) {
+    .texto > * {
+      animation: sube 0.9s var(--ease-out) both;
+    }
+    .texto > :nth-child(2) { animation-delay: 0.06s; }
+    .texto > :nth-child(3) { animation-delay: 0.14s; }
+    .texto > :nth-child(4) { animation-delay: 0.22s; }
+    .media {
+      animation: aparece 1.1s var(--ease-out) 0.1s both;
+    }
+  }
+
+  @keyframes sube {
+    from {
+      opacity: 0;
+      transform: translateY(1.25rem);
+    }
+  }
+
+  @keyframes aparece {
+    from {
+      opacity: 0;
+      transform: scale(0.97);
+    }
   }
 
   @media (max-width: 53.75rem) {
     .hero {
       grid-template-columns: 1fr;
+      padding-top: 0.5rem;
     }
 
-    .media {
-      aspect-ratio: 4 / 3.4;
-      border-radius: var(--radius-l);
+    h1 {
+      max-width: 13ch;
     }
 
     .figura {
-      margin-bottom: 1.5rem;
+      max-width: 34rem;
     }
 
+    .media {
+      aspect-ratio: 4 / 3.6;
+      border-radius: 40% 40% var(--radius-l) var(--radius-l) / 28% 28% var(--radius-l) var(--radius-l);
+    }
+  }
+
+  @media (max-width: 30rem) {
     .botones :global(.btn) {
-      flex: 1 1 12rem;
+      flex: 1 1 100%;
     }
   }
 </style>
