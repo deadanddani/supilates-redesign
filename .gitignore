@@ -32,3 +32,8 @@ playwright-report/
 
 # Lighthouse CI
 .lighthouseci/
+
+# skills instaladas localmente
+.agents/
+.claude/
+skills-lock.json
